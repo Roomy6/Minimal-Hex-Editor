@@ -6,12 +6,6 @@
 char **lines = NULL;
 int count = 0;
 
-/* TODO:
- * [x] replace readFile to extract bytes
- * [ ] possibly add a text view on the side
- * [ ] take argument weather to read or write
- */
-
 void readFile(FILE *file)
 {
     /* buffer is the amount of data displayes per address */
