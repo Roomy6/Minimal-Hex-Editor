@@ -1,3 +1,5 @@
+# Minimal Binary / Hex editor (MBE)
+
 This is a super minimalist binary / hex editor and viewer written in pure C code.
 
 ---
