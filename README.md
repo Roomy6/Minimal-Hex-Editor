@@ -3,7 +3,7 @@ This is a super minimalist binary / hex editor and viewer written in pure C code
 ---
 ## Examples
 
-![[img/terminal.png]]
+![Terminal Image](https://raw.githubusercontent.com/Roomy6/Minimal-Hex-Editor/refs/heads/main/img/terminal.png)
 
 ---
 ## Compile from source
