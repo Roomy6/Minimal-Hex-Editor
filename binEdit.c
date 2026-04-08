@@ -1,7 +1,7 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include "helper.h"
 
 char **lines = NULL;
 int count = 0;
@@ -9,21 +9,33 @@ int count = 0;
 void readFile(FILE *file)
 {
     /* buffer is the amount of data displayes per address */
-    unsigned char buffer [16];
+    unsigned char buffer[DISPLAY_SIZE];
     size_t bytesRead;
     long address = 0;
-    long count = 0;
 
     while ((bytesRead = fread(buffer, 1, sizeof(buffer), file)) > 0)
     {
+        /* Print the address */
         printf("%08lx: ", address);
 
+        /* Print the hex */
         for (size_t i = 0; i < bytesRead; i++)
         {
             printf("%02x ", buffer[i]);
         }
-
+        
+        /* Space padding */
+        for (size_t i = bytesRead; i < 16; i++)
+        {
+            printf("   "); // 3 spaces per missing byte
+        }       
+       
+        printf(" |  ");
+        
+        /* Print ACSII representation */
+        hexToAscii(bytesRead, buffer);
         printf("\n");
+        
         address += bytesRead;
     }
 }
