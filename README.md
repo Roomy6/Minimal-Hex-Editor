@@ -26,6 +26,6 @@ cc binEdit.c -o binEdit
 
 A list of things I'm working on implementing to the program.
 
-- [ ] Add text representation of Hex code.
+- [X] Add text representation of Hex code.
 - [ ] Implement Address jumping
 - [ ] Line editing
