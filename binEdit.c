@@ -1,10 +1,20 @@
+/*
+ * Minimal Binery Editor
+ *
+ * This is a simple and minimal program that
+ * allows users to read and write any file
+ * as a Hex representation
+ *
+ * Written by Roomy.
+ * https://github.com/Roomy6/Minimal-Hex-Editor/
+ */
+
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 #include "helper.h"
 
-char **lines = NULL;
-int count = 0;
+#define VERSION "DEV-0.0.2"
 
 void readFile(FILE *file)
 {
@@ -103,18 +113,40 @@ void writeFile(FILE *file)
 }
 
 int main(int argc, char *argv[])
-{
-    FILE *file = fopen(argv[1], "rb+");
-    
+{    
+//    printf("[DBG] Arguments: %d\n", argc);
+
+    /* PLESAE CLEAN THIS UP IT'S A MESS */
+
+    if(argc > 1 && strcmp(argv[1], "-h") == 0)
+    {
+        printf("MBE - Minimal Binary Editor\n");
+        printf("Version: %s\n\n", VERSION);
+
+        printf("Additional arguments:\n");
+        printf("-h      Displays help page\n");
+        printf("-v      Show program version\n");
+//        printf("-rAs    Remove ASCII representation\n");
+//        printf("-rAd    Remove Address position\n");
+        
+        return 1;
+    }
+    if(argc > 1 && strcmp(argv[1], "-v") == 0)
+    {
+        printf("Version: %s\n", VERSION);
+        return 1;
+    }
     if(argc < 3)
     {
-        printf("Invalid arguments.\n");
+        printf("Invalid arguments.\n"); 
+
         /* im proud of the arg[0] thing :) */
-        printf("%s [file] [r/w]\n", argv[0]);
+        printf("Usage: %s [file] [r/w]\n\n", argv[0]);
+        printf("Use -h for more infomration\n");
         return 1;
     }
 
-//    printf("Arguments: %d\n", argc);
+    FILE *file = fopen(argv[1], "rb+");
 
     if(file == NULL)
     {
