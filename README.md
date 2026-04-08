@@ -13,13 +13,57 @@ This is a super minimalist binary / hex editor and viewer written in pure C code
 Instructions on how to compile the project from source.
 ### Linux
 
-Compile using gcc or cc
+Requirements:
+- GCC
+- CMake
+
+Clone the repository
+```bash
+git clone https://github.com/Roomy6/Minimal-Hex-Editor.git
+```
+
+Create a build directory
+```
+cd Minimal-Hex-Editor && mkdir build && cd build
+```
+
+Setup CMake and build
+```bash
+cmake .. && make
+```
+
+**One line clone and compile**
+```bash
+git clone https://github.com/Roomy6/Minimal-Hex-Editor.git && cd Minimal-Hex-Editor && mkdir build && cd build && cmake .. && make
+```
+The compiles program should be in the `build` directory named `mbe`
+
+Or you *could* directly compile the program using GCC or CC
 ```bash
 cc binEdit.c -o binEdit
 ```
 ### Windows
 
-***TODO - I'm working on it :)***
+Requirements:
+- [CMake](https://cmake.org/download/)
+- [git](https://git-scm.com/install/)
+
+Clone the repository
+```bash
+git clone https://github.com/Roomy6/Minimal-Hex-Editor.git
+```
+
+Create a build directory
+```bash
+cd Minimal-Hex-Editor && mkdir build
+```
+
+Build using CMake
+```bash
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release
+```
+
+The built program *should* be in `build/Release` named `mbe.exe`.
 
 ---
 ## TODO
