@@ -1,4 +1,6 @@
 .ccls-cache
+build
+
 bin
 example.c
 file.txt
