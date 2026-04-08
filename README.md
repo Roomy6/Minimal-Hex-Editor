@@ -5,7 +5,7 @@ This is a super minimalist binary / hex editor and viewer written in pure C code
 ---
 ## Examples
 
-![Terminal Image](https://raw.githubusercontent.com/Roomy6/Minimal-Hex-Editor/refs/heads/main/img/terminal.png)
+![Terminal GIF Example](https://raw.githubusercontent.com/Roomy6/Minimal-Hex-Editor/refs/heads/main/img/MBE-Example-1.gif)
 
 ---
 ## Compile from source
