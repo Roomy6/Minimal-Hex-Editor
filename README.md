@@ -16,6 +16,7 @@ Instructions on how to compile the project from source.
 Requirements:
 - GCC
 - CMake
+- Make
 
 Clone the repository
 ```bash
