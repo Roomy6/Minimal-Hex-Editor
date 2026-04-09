@@ -12,7 +12,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include <stdbool.h>
 #include "helper.h"
 
 #define RELEASE "DEV"
@@ -34,8 +33,7 @@ void readFile(FILE *file)
     while ((bytesRead = fread(buffer, 1, sizeof(buffer), file)) > 0)
     {
         /* Print the address */
-        if(showAddress)
-            printf("%08lx: ", address);
+        addressPrint(address, false);
 
         /* Print the hex */
         for (size_t i = 0; i < bytesRead; i++)
@@ -76,17 +74,9 @@ void writeFile(FILE *file)
     fseek(file, 0, SEEK_END);           // mov file stream to EOF (i think)
     long address = ftell(file);         // position in file stream
 
-    if(showAddress)
-        printf("%08lx: ", address);     // print address position
+    addressPrint(address, false);
     fflush(stdout);                     // flush the output buffer
     
-/*
-    for(long i = 0; i < size; i++)
-    {
-        fputc(0x00, file);
-    }
-*/
-
     while((c = getchar()) != EOF)
     {
         /* check if user inputs 'q' for quit */
@@ -103,6 +93,10 @@ void writeFile(FILE *file)
 
             if(scanf("%lx %x", &addressB, &value) == 2)
             {
+                /* Default to 00 if no input for hex */ 
+                if(value == -1)
+                    value = 0;
+
                 // *00000100 02
                 if(debug)
                     printf("[DBG] Address %08lx - %08lx set to %02x\n", address, addressB, value);
@@ -120,8 +114,7 @@ void writeFile(FILE *file)
                     printf("[ERR] Cannot set address.\n");
             }
             /* Print the address to prevent the weird gap */
-            if(showAddress)
-                printf("%08lx: ", address);
+            addressPrint(address, false);
         }
         
         /* ignore whitespace */
@@ -179,6 +172,11 @@ int main(int argc, char *argv[])
             printf("-d      Enable debug output\n");
             printf("-rAs    Remove ASCII representation\n");
             printf("-rAd    Remove Address position\n");
+
+            printf("\n");
+
+            printf("While writing a binary, you can use '*' to jump fill a memory region.\n");
+            printf("Eg: *[address to] [hex (default 00)]\n");
 
             return 0;
         }
