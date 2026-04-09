@@ -74,3 +74,4 @@ A list of things I'm working on implementing to the program.
 - [X] Add text representation of Hex code.
 - [X] Implement Address jumping
 - [ ] Line editing
+- [ ] Fix address jumping for empty hex input
