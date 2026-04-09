@@ -72,5 +72,5 @@ The built program *should* be in `build/Release` named `mbe.exe`.
 A list of things I'm working on implementing to the program.
 
 - [X] Add text representation of Hex code.
-- [ ] Implement Address jumping
+- [X] Implement Address jumping
 - [ ] Line editing
