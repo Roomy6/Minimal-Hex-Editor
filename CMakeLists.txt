@@ -1,2 +1,2 @@
-add_executable(mbe binEdit.c)
+add_executable(mbe mbe.c)
 
