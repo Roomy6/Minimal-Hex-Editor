@@ -94,8 +94,8 @@ void writeFile(FILE *file)
             if(scanf("%lx %x", &addressB, &value) == 2)
             {
                 /* Default to 00 if no input for hex */ 
-                if(value == -1)
-                    value = 0;
+                if(value == 0)
+                    value = 0x00;
 
                 // *00000100 02
                 if(debug)
@@ -111,7 +111,7 @@ void writeFile(FILE *file)
                     }
                 }
                 else
-                    printf("[ERR] Cannot set address.\n");
+                    errPrint("Cannot set address.");
             }
             /* Print the address to prevent the weird gap */
             addressPrint(address, false);
@@ -170,13 +170,13 @@ int main(int argc, char *argv[])
             printf("-h      Displays help page\n");
             printf("-v      Show program version\n");
             printf("-d      Enable debug output\n");
-            printf("-rAs    Remove ASCII representation\n");
-            printf("-rAd    Remove Address position\n");
+            printf("-ras    Remove ASCII representation\n");
+            printf("-rad    Remove Address position\n");
 
             printf("\n");
 
             printf("While writing a binary, you can use '*' to jump fill a memory region.\n");
-            printf("Eg: *[address to] [hex (default 00)]\n");
+            printf("Eg: *[address to] [hex]\n");
 
             return 0;
         }
@@ -189,11 +189,11 @@ int main(int argc, char *argv[])
         {
             debug = true;
         }
-        else if (strcmp(argv[i], "-rAs") == 0)
+        else if (strcmp(argv[i], "-ras") == 0)
         {
             showAscii = false;
         }
-        else if (strcmp(argv[i], "-rAd") == 0)
+        else if (strcmp(argv[i], "-rad") == 0)
         {
             showAddress = false;
         }
@@ -205,6 +205,12 @@ int main(int argc, char *argv[])
         }
         else if (mode == 0)
         {
+            if(strlen(argv[i]) != 1 || (argv[i][0] != 'r' && argv[i][0] != 'w'))
+            {
+                printf("Invalid mode: %s\n", argv[i]);
+                printf("Use 'r' or 'w'\n");
+                return 1;
+            }
             mode = argv[i][0];  // 'r' or 'w'
         }
         else
@@ -247,20 +253,17 @@ int main(int argc, char *argv[])
             return 1;
         }
     }
-
-    /* convert string to long */
-//    long size = atoll(argv[2]);
     
-    if(argv[2][0] == 'r')
+    if(mode == 'r')
         readFile(file);
-    else if(argv[2][0] == 'w')
+    else if(mode  == 'w')
         writeFile(file);
     else
     {
-        printf("Invalid arguments.\n");
-        return 1;
+        /* Backup else just incase it somehow bypasses xD */
+        errPrint("Invalid arguments, please use -h for more info.");
     }
-    
+ 
     fclose(file);
     return 0;
 }
