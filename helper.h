@@ -10,6 +10,11 @@ extern bool debug;
 extern bool showAscii;
 extern bool showAddress;
 
+void errPrint(char string[])
+{
+    printf("[ERR] %s\n", string);
+}
+
 void dbgPrint(char string[])
 {
     if(debug)
