@@ -40,11 +40,11 @@ void readFile(FILE *file)
             printf("   "); // 3 spaces per missing byte
         }       
        
-        printf(" |  ");
+        printf(" |");
         
         /* Print ACSII representation */
         hexToAscii(bytesRead, buffer);
-        printf("\n");
+        printf("|\n");
         
         address += bytesRead;
     }
@@ -54,9 +54,10 @@ void writeFile(FILE *file)
 {
     int c;                          // keyboard input
     int high = -1;                  // high nibble
-    long address = ftell(file);     // position in file stream
 
+    /* define address after fseek */
     fseek(file, 0, SEEK_END);       // mov file stream to EOF (i think)
+    long address = ftell(file);     // position in file stream
 
     printf("%08lx: ", address);     // print address position
     fflush(stdout);                 // flush the output buffer
@@ -70,7 +71,6 @@ void writeFile(FILE *file)
 
     while((c = getchar()) != EOF)
     {
-
         /* check if user inputs 'q' for quit */
         /* Make sure this is cehcked first */
         if (c == 0x71 || c == 0x51)
