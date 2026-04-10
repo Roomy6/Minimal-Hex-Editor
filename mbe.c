@@ -9,9 +9,6 @@
  * https://github.com/Roomy6/Minimal-Hex-Editor/
  */
 
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
 #include "helper.h"
 
 #define RELEASE "DEV"
@@ -32,35 +29,7 @@ void readFile(FILE *file)
 
     while ((bytesRead = fread(buffer, 1, sizeof(buffer), file)) > 0)
     {
-        /* Print the address */
-        addressPrint(address, false);
-
-        /* Print the hex */
-        for (size_t i = 0; i < bytesRead; i++)
-        {
-            printf("%02x ", buffer[i]);
-        }
-        
-        if(showAscii)
-        {
-            /* Space padding */
-            for (size_t i = bytesRead; i < 16; i++)
-            {
-                printf("   "); // 3 spaces per missing byte
-            }       
-
-            printf(" |");
-
-            /* Print ACSII representation */
-            hexToAscii(bytesRead, buffer);
-            printf("|\n");
-        }
-        /* I have no idea if this is a smart way of doing this */
-        else if(!showAscii && showAddress)
-            printf("\n");
-        else if(!showAscii && !showAddress)
-            printf("\n");
-        
+        printLine(buffer, bytesRead, address);
         address += bytesRead;
     }
 }
@@ -91,6 +60,7 @@ void writeFile(FILE *file)
             long addressB = 0;
             unsigned int value;
 
+            /* to be honest i hate this code, its messy */
             if(scanf("%lx %x", &addressB, &value) == 2)
             {
                 /* Default to 00 if no input for hex */ 
@@ -103,6 +73,8 @@ void writeFile(FILE *file)
                 /* Check if current address is smaller that addressB */
                 if(address < addressB)
                 {
+                    /* +1 to fully fill to entered address */
+                    addressB += 1;
                     for(address = address; address < addressB; address++)
                     {
                         if(debug)
@@ -118,36 +90,31 @@ void writeFile(FILE *file)
         }
         
         /* ignore whitespace */
-        if(c == ' ' || c == '\n' || c == '\t')
+        if (isspace(c))
             continue;
 
-        /* do some funky stuff with hex idk */
-        int value;
-
-        if (c >= '0' && c <= '9') value = c - '0';
-        else if (c >= 'A' && c <= 'F') value = c - 'A' + 10;
-        else if (c >= 'a' && c <= 'f') value = c - 'a' + 10;
-        else continue;
+        int value = hexValue(c);
+        if(value < 0) continue;
 
         if (value == -1) {
             fprintf(stderr, "\nInvalid hex character: %c\n", c);
             continue;
         }
 
-        if(high == -1) { high = value; }
-        else
+        if (high < 0)
         {
-            unsigned char byte = (high << 4) | value;
-            fputc(byte, file);
-
-            address++;
-            if(showAscii)
-                printf("\r%08lx: ", address);
-
-            high = -1;
-
-            fflush(stdout);
+            high = value;
+            continue;
         }
+
+        unsigned char byte = (high << 4) | value;
+        fputc(byte, file);
+        address++;
+
+        if (showAscii)
+            printf("\r%08lx: ", address);
+
+        high = -1;
     }
 }
 
@@ -161,41 +128,11 @@ int main(int argc, char *argv[])
 
     for(int i = 1; i < argc; i++)
     {
-        if (strcmp(argv[i], "-h") == 0)
-        {
-            printf("MBE - Minimal Binary Editor\n");
-            printf("Version %s-%s\n\n", RELEASE, VERSION);
 
-            printf("Additional arguments:\n");
-            printf("-h      Displays help page\n");
-            printf("-v      Show program version\n");
-            printf("-d      Enable debug output\n");
-            printf("-ras    Remove ASCII representation\n");
-            printf("-rad    Remove Address position\n");
-
-            printf("\n");
-
-            printf("While writing a binary, you can use '*' to jump fill a memory region.\n");
-            printf("Eg: *[address to] [hex]\n");
-
-            return 0;
-        }
-        else if (strcmp(argv[i], "-v") == 0)
+        if(argv[i][0] == '-')
         {
-            printf("%s - version %s-%s\n", NAME, RELEASE, VERSION);
-            return 0;
-        }
-        else if (strcmp(argv[i], "-d") == 0)
-        {
-            debug = true;
-        }
-        else if (strcmp(argv[i], "-ras") == 0)
-        {
-            showAscii = false;
-        }
-        else if (strcmp(argv[i], "-rad") == 0)
-        {
-            showAddress = false;
+            handleFlag(argv[i]);
+            continue;
         }
 
         /* positional args */
@@ -236,22 +173,14 @@ int main(int argc, char *argv[])
     if (debug)
         printf("[DBG] file=%s, mode=%c\n", filename, mode);
 
-    FILE *file = fopen(filename, "rb+");
+    /* Open the file using the helper */
+    FILE *file = openFile(filename, mode);
 
-    if(file == NULL)
+    if(!file)
     {
-        if(argv[2][0] == 'w')
-        {
-            printf("Creating file %s\n", argv[1]);
-            file = fopen(argv[1], "wb+");
-            //        perror("fopen");
-        }
-
-        if(file == NULL)
-        {
-            printf("No such file or directory\n");
-            return 1;
-        }
+        /* error out if any ocur */
+        perror("");
+        return 1;
     }
     
     if(mode == 'r')
