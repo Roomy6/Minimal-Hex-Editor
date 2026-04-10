@@ -11,10 +11,6 @@
 
 #include "helper.h"
 
-#define RELEASE "DEV"
-#define VERSION "0.0.2"
-#define NAME "MBE"
-
 /* idk why this does not work when i put it in helper.h */
 bool debug = false;
 bool showAscii = true;
@@ -167,6 +163,7 @@ int main(int argc, char *argv[])
         printf("Invalid arguments.\n");
         printf("Usage: %s [file] [r/w]\n\n", argv[0]);
         printf("Use -h for more information\n");
+
         return 1;
     }
 

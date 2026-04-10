@@ -7,6 +7,9 @@
 #include <string.h>
 #include <stdbool.h>
 
+#define VERSION "v0.0.2-DEV"
+#define NAME "MBE"
+
 #define DISPLAY_SIZE 16
 
 extern bool debug;
@@ -75,10 +78,33 @@ void printLine(unsigned char *buffer, size_t len, long address)
     printf("\n");
 }
 
+
+void displayVersion()
+{
+    printf("%s %s\n", NAME, VERSION);
+}
+
+void displayHelp()
+{
+    displayVersion();
+
+    printf("Additional arguments:\n");
+    printf("-h Displays help page\n");
+    printf("-v Show program version\n");
+    printf("-d Enable debug output\n");
+    printf("-ras Remove ASCII representation\n");
+    printf("-rad Remove Address position\n");
+
+    printf("\n");
+
+    printf("While writing a binary, you can use '*' to jump fill a memory region.\n");
+    printf("Eg: *[address to] [hex]\n");
+}
+
 void handleFlag(const char *arg)
 {
-    if      (!strcmp(arg, "-h")) {  exit(0); }          /* Help */
-    else if (!strcmp(arg, "-v")) {  exit(0); }          /* Version */
+    if      (!strcmp(arg, "-h")) {  displayHelp(); exit(0); }          /* Help */
+    else if (!strcmp(arg, "-v")) {  displayVersion(); exit(0); }          /* Version */
     else if (!strcmp(arg, "-d"))    debug = true;       /* Debug */
     else if (!strcmp(arg, "-ras"))  showAscii = false;  /* Remove ASCII */
     else if (!strcmp(arg, "-rad"))  showAddress = false;/* Remove Address */
