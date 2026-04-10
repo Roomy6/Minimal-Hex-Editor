@@ -1,4 +1,8 @@
 # Minimal Binary / Hex editor (MBE)
+[![Release](https://img.shields.io/github/v/release/Roomy6/Minimal-Hex-Editor?include_prereleases)](https://github.com/Roomy6/Minimal-Hex-Editor/releases/latest)
+![Status](https://img.shields.io/badge/status-INDEV-orange)
+![Issues](https://img.shields.io/github/issues/Roomy6/Minimal-Hex-Editor)
+![Downloads](https://img.shields.io/github/downloads/Roomy6/Minimal-Hex-Editor/total)
 
 This is a super minimalist binary / hex editor and viewer written in pure C code.
 
@@ -37,12 +41,8 @@ cmake .. && make
 ```bash
 git clone https://github.com/Roomy6/Minimal-Hex-Editor.git && cd Minimal-Hex-Editor && mkdir build && cd build && cmake .. && make
 ```
-The compiles program should be in the `build` directory named `mbe`
+The compiles program should be in the `build` directory, named `mbe`
 
-Or you *could* directly compile the program using GCC or CC
-```bash
-cc binEdit.c -o binEdit
-```
 ### Windows
 
 Requirements:
@@ -64,7 +64,7 @@ Build using CMake
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release
 ```
 
-The built program *should* be in `build/Release` named `mbe.exe`.
+The built program *should* be in the `build/Release` directory, named `mbe.exe`.
 
 ---
 ## TODO
@@ -75,4 +75,5 @@ A list of things I'm working on implementing to the program.
 - [X] Implement Address jumping
 - [ ] Line editing
 - [ ] Fix address jumping for empty hex input
-- [ ] Add address jump when reading
+- [ ] Skip repeating values when reading
+
