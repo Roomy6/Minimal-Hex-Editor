@@ -91,6 +91,7 @@ void displayHelp()
 {
     displayVersion();
     printf("\n");
+    printf("Usage: %s [file] [r/w]\n\n", argv[0]);
     printf("Additional arguments:\n");
     printf("-h      Displays help page\n");
     printf("-v      Show program version\n");
