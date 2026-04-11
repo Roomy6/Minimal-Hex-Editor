@@ -68,58 +68,64 @@ void writeFile(FILE *file)
     {
         /* check if user inputs 'q' for quit */
         /* Make sure this is cehcked first */
-        if (c == 'q' || c == 'Q')
-        {
+        if(c == 'q' || c == 'Q')
             return;
-        }
 
         else if(c == '*')
         {
             long addressB = 0;
-            unsigned int value;
+            unsigned int value = 0;
+            char line[128];
+            int count;
 
-            /* to be honest i hate this code, its messy */
-            if(scanf("%lx %x", &addressB, &value) == 2)
+            if(fgets(line, sizeof(line), stdin))
             {
-                /* Default to 00 if no input for hex */ 
-                if(value == 0)
-                    value = 0x00;
-
-                // *00000100 02
-                if(debug)
-                    printf("[DBG] Address %08lx - %08lx set to %02x\n", address, addressB, value);
-                /* Check if current address is smaller that addressB */
-                if(address < addressB)
+                count = sscanf(line, "%lx %x", &addressB, &value);
+                
+                /* Make a check if the hex value has been provided or not */
+                if(count >= 1)
                 {
-                    /* +1 to fully fill to entered address */
-                    addressB += 1;
-                    for(address = address; address < addressB; address++)
+                    /* No hex provided, default to 00 */
+                    if(count == 1)
+                        value = 0x00;
+
+                    // *00000100 02
+                    if(debug)
+                        printf("[DBG] Address %08lx - %08lx set to %02x\n", address, addressB, value);
+                    /* Check if current address is smaller that addressB */
+                    if(address < addressB)
                     {
-                        if(debug)
-                            printf("[DGB] Set %08lx to %02x\n", address, value);
-                        fputc(value, file);
+                        /* +1 to fully fill to entered address */
+                        addressB += 1;
+                        for(address = address; address < addressB; address++)
+                        {
+                            if(debug)
+                                printf("[DGB] Set %08lx to %02x\n", address, value);
+                            fputc(value, file);
+                        }
                     }
+                    else
+                        errPrint("Cannot set address.");
                 }
-                else
-                    errPrint("Cannot set address.");
             }
+
             /* Print the address to prevent the weird gap */
             addressPrint(address, false);
         }
         
         /* ignore whitespace */
-        if (isspace(c))
+        if(isspace(c))
             continue;
 
         int value = hexValue(c);
         if(value < 0) continue;
 
-        if (value == -1) {
+        if(value == -1) {
             fprintf(stderr, "\nInvalid hex character: %c\n", c);
             continue;
         }
 
-        if (high < 0)
+        if(high < 0)
         {
             high = value;
             continue;
@@ -129,7 +135,7 @@ void writeFile(FILE *file)
         fputc(byte, file);
         address++;
 
-        if (showAscii)
+        if(showAscii)
             printf("\r%08lx: ", address);
 
         high = -1;
