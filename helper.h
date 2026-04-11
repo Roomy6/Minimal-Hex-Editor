@@ -7,7 +7,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-#define VERSION "v0.0.2-DEV"
+#define VERSION "v0.0.3-DEV"
 #define NAME "MBE"
 
 #define DISPLAY_SIZE 16
@@ -15,6 +15,7 @@
 extern bool debug;
 extern bool showAscii;
 extern bool showAddress;
+extern bool verbose;
 
 void errPrint(char string[])
 {
@@ -59,11 +60,14 @@ int hexValue(int c)
 
 void printLine(unsigned char *buffer, size_t len, long address)
 {
-    addressPrint(address, false);
-
+    if(showAddress)
+        addressPrint(address, false);
+    
     for(size_t i = 0; i < len; i++)
+    {
         printf("%02x ", buffer[i]);
-
+    }
+    
     if(showAscii)
     {
         /* Use DISPLAY_SIZE instead of hardocding :) */
@@ -78,7 +82,6 @@ void printLine(unsigned char *buffer, size_t len, long address)
     printf("\n");
 }
 
-
 void displayVersion()
 {
     printf("%s %s\n", NAME, VERSION);
@@ -87,13 +90,14 @@ void displayVersion()
 void displayHelp()
 {
     displayVersion();
-
+    printf("\n");
     printf("Additional arguments:\n");
-    printf("-h Displays help page\n");
-    printf("-v Show program version\n");
-    printf("-d Enable debug output\n");
-    printf("-ras Remove ASCII representation\n");
-    printf("-rad Remove Address position\n");
+    printf("-h      Displays help page\n");
+    printf("-v      Show program version\n");
+    printf("-d      Enable debug output\n");
+    printf("-ras    Remove ASCII representation\n");
+    printf("-rad    Remove Address position\n");
+    printf("-ve     Enable verbose output\n");
 
     printf("\n");
 
@@ -103,11 +107,12 @@ void displayHelp()
 
 void handleFlag(const char *arg)
 {
-    if      (!strcmp(arg, "-h")) {  displayHelp(); exit(0); }          /* Help */
-    else if (!strcmp(arg, "-v")) {  displayVersion(); exit(0); }          /* Version */
-    else if (!strcmp(arg, "-d"))    debug = true;       /* Debug */
-    else if (!strcmp(arg, "-ras"))  showAscii = false;  /* Remove ASCII */
-    else if (!strcmp(arg, "-rad"))  showAddress = false;/* Remove Address */
+    if      (!strcmp(arg, "-h")) {  displayHelp(); exit(0); }       /* Help */
+    else if (!strcmp(arg, "-v")) {  displayVersion(); exit(0); }    /* Version */
+    else if (!strcmp(arg, "-d"))    debug = true;                   /* Debug */
+    else if (!strcmp(arg, "-ras"))  showAscii = false;              /* Remove ASCII */
+    else if (!strcmp(arg, "-rad"))  showAddress = false;            /* Remove Address */
+    else if (!strcmp(arg, "-ve"))   verbose = true;                 /* Full verbose output */
 }
 
 FILE *openFile(const char *name, char mode)
