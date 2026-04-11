@@ -1,5 +1,5 @@
 /*
- * Minimal Binary Editor v0.1.0-rc1
+ * Minimal Binary Editor v0.1.0
  *
  * This is a simple and minimal program that
  * allows users to read and write any file
