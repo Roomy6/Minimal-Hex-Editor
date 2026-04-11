@@ -1,5 +1,5 @@
 /*
- * Minimal Binery Editor
+ * Minimal Binary Editor v0.0.3-DEV
  *
  * This is a simple and minimal program that
  * allows users to read and write any file
@@ -11,21 +11,43 @@
 
 #include "helper.h"
 
-/* idk why this does not work when i put it in helper.h */
-bool debug = false;
-bool showAscii = true;
-bool showAddress = true;
+bool debug          = false;
+bool showAscii      = true;
+bool showAddress    = true;
+bool verbose        = false;
 
 void readFile(FILE *file)
 {
     /* buffer is the amount of data displayes per address */
     unsigned char buffer[DISPLAY_SIZE];
-    size_t bytesRead;
+    unsigned char prevBuffer[DISPLAY_SIZE];
+
+    size_t bytesRead, prevBytesRead = 0;
+
     long address = 0;
+
+    int isDuplicate = 0;
 
     while ((bytesRead = fread(buffer, 1, sizeof(buffer), file)) > 0)
     {
-        printLine(buffer, bytesRead, address);
+        /* dont know why i need to invery verbose check */
+        if(!verbose && bytesRead == prevBytesRead && 
+                memcmp(buffer, prevBuffer, bytesRead) == 0)
+        {
+            if(!isDuplicate)
+            {
+                printf("*\n");
+                isDuplicate = 1;
+            }
+        }
+        else
+        {
+            printLine(buffer, bytesRead, address);
+            isDuplicate = 0;
+
+            memcpy(prevBuffer, buffer, bytesRead);
+            prevBytesRead = bytesRead;
+        }
         address += bytesRead;
     }
 }
@@ -118,9 +140,6 @@ int main(int argc, char *argv[])
 {
     char *filename = NULL;
     char mode = 0;
-
-    if(debug)
-        printf("[DBG] Arguments: %d\n", argc);
 
     for(int i = 1; i < argc; i++)
     {
