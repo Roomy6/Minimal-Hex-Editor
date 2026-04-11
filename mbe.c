@@ -1,5 +1,5 @@
 /*
- * Minimal Binary Editor v0.0.3-DEV
+ * Minimal Binary Editor v0.1.0-rc1
  *
  * This is a simple and minimal program that
  * allows users to read and write any file
@@ -76,17 +76,17 @@ void writeFile(FILE *file)
             long addressB = 0;
             unsigned int value = 0;
             char line[128];
-            int count;
+            int input;
 
             if(fgets(line, sizeof(line), stdin))
             {
-                count = sscanf(line, "%lx %x", &addressB, &value);
+                input = sscanf(line, "%lx %x", &addressB, &value);
                 
                 /* Make a check if the hex value has been provided or not */
-                if(count >= 1)
+                if(input >= 1)
                 {
                     /* No hex provided, default to 00 */
-                    if(count == 1)
+                    if(input == 1)
                         value = 0x00;
 
                     // *00000100 02
@@ -113,11 +113,50 @@ void writeFile(FILE *file)
             addressPrint(address, false);
         }
         
+        /* Point cursor command */
+        else if(c == '>')
+        {
+            unsigned char buffer[DISPLAY_SIZE];
+            size_t bytesRead, prevBytesRead = 0;
+            long addressB = 0;
+            char line[128];
+            char *ptr;
+            int input;
+            
+            /* Get user address input */
+            if(fgets(line, sizeof(line), stdin))
+            {
+                input = sscanf(line, "%lx", &addressB);
+                if(input == 1)
+                {
+                    if(debug)
+                        printf("[DBG] Pointing to address %08lx\n", addressB);
+                    
+                    /* Move cursor to address */
+                    if (fseek(file, addressB, SEEK_SET) != 0)
+                    {
+                        errPrint("Invalid address.");
+                    }
+
+                    address = addressB;
+
+                    addressPrint(address, false);
+                    bytesRead = fread(buffer, 1, DISPLAY_SIZE, file);
+
+                    /* This fixed the +16 address bug */
+                    fseek(file, address, SEEK_SET);
+                }
+                else
+                    errPrint("Could not move cursor to address.");
+            }
+        }
+
         /* ignore whitespace */
         if(isspace(c))
             continue;
 
         int value = hexValue(c);
+
         if(value < 0) continue;
 
         if(value == -1) {
