@@ -87,10 +87,12 @@ void displayVersion()
     printf("%s %s\n", NAME, VERSION);
 }
 
-void displayHelp()
+void displayHelp(char *argv[])
 {
     displayVersion();
     printf("\n");
+    printf("Usage: %s [file] [r/w]\n\n", argv[0]);
+
     printf("Additional arguments:\n");
     printf("-h      Displays help page\n");
     printf("-v      Show program version\n");
@@ -107,9 +109,9 @@ void displayHelp()
     printf("Eg: >[address]\n");
 }
 
-void handleFlag(const char *arg)
+void handleFlag(const char *arg, char *argv[])
 {
-    if      (!strcmp(arg, "-h")) {  displayHelp(); exit(0); }       /* Help */
+    if      (!strcmp(arg, "-h")) {  displayHelp(argv); exit(0); }       /* Help */
     else if (!strcmp(arg, "-v")) {  displayVersion(); exit(0); }    /* Version */
     else if (!strcmp(arg, "-d"))    debug = true;                   /* Debug */
     else if (!strcmp(arg, "-ras"))  showAscii = false;              /* Remove ASCII */
