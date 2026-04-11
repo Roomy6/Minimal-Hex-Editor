@@ -41,7 +41,7 @@ cmake .. && make
 ```bash
 git clone https://github.com/Roomy6/Minimal-Hex-Editor.git && cd Minimal-Hex-Editor && mkdir build && cd build && cmake .. && make
 ```
-The compiles program should be in the `build` directory, named `mbe`
+The compiled program should be in the `build` directory, named `mbe`
 
 ### Windows
 
