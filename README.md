@@ -1,6 +1,6 @@
 # Minimal Binary / Hex editor (MBE)
 [![Release](https://img.shields.io/github/v/release/Roomy6/Minimal-Hex-Editor?include_prereleases)](https://github.com/Roomy6/Minimal-Hex-Editor/releases/latest)
-![Status](https://img.shields.io/badge/status-INDEV-orange)
+![Status](https://img.shields.io/badge/status-RELESAE-orange)
 ![Issues](https://img.shields.io/github/issues/Roomy6/Minimal-Hex-Editor)
 ![Downloads](https://img.shields.io/github/downloads/Roomy6/Minimal-Hex-Editor/total)
 
@@ -72,8 +72,8 @@ The built program *should* be in the `build/Release` directory, named `mbe.exe`.
 A list of things I'm working on implementing to the program.
 
 - [X] Add text representation of Hex code.
-- [X] Implement Address jumping
-- [ ] Line editing
+- [X] Implement Address jumping (Address fill)
+- [X] Move cursor to address (line editing)
 - [X] Fix address jumping for empty hex input
 - [X] Skip repeating values when reading
 
