@@ -7,7 +7,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-#define VERSION "v0.0.3-DEV"
+#define VERSION "v0.1.0-rc1"
 #define NAME "MBE"
 
 #define DISPLAY_SIZE 16
@@ -103,6 +103,8 @@ void displayHelp()
 
     printf("While writing a binary, you can use '*' to jump fill a memory region.\n");
     printf("Eg: *[address to] [hex]\n");
+    printf("You can move your cursor position by using '>'.\n");
+    printf("Eg: >[address]\n");
 }
 
 void handleFlag(const char *arg)
