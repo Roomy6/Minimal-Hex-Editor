@@ -191,7 +191,7 @@ int main(int argc, char *argv[])
 
         if(argv[i][0] == '-')
         {
-            handleFlag(argv[i]);
+            handleFlag(argv[i], argv);
             continue;
         }
 
