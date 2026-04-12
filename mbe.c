@@ -1,5 +1,5 @@
 /*
- * Minimal Binary Editor v0.1.0
+ * Minimal Binary Editor v0.1.1
  *
  * This is a simple and minimal program that
  * allows users to read and write any file
@@ -122,6 +122,10 @@ void writeFile(FILE *file)
             char line[128];
             char *ptr;
             int input;
+
+            /* Get file size */
+            fseek(file, 0, SEEK_END);
+            long fileSize = ftell(file);
             
             /* Get user address input */
             if(fgets(line, sizeof(line), stdin))
@@ -133,18 +137,22 @@ void writeFile(FILE *file)
                         printf("[DBG] Pointing to address %08lx\n", addressB);
                     
                     /* Move cursor to address */
-                    if (fseek(file, addressB, SEEK_SET) != 0)
+                    if(addressB >= fileSize)
                     {
                         errPrint("Invalid address.");
+                        addressPrint(address, false);
                     }
+                    else
+                    {
+                        fseek(file, addressB, SEEK_SET);
+                        address = addressB;
 
-                    address = addressB;
+                        addressPrint(address, false);
+                        bytesRead = fread(buffer, 1, DISPLAY_SIZE, file);
 
-                    addressPrint(address, false);
-                    bytesRead = fread(buffer, 1, DISPLAY_SIZE, file);
-
-                    /* This fixed the +16 address bug */
-                    fseek(file, address, SEEK_SET);
+                        /* This fixed the +16 address bug */
+                        fseek(file, address, SEEK_SET);
+                    }
                 }
                 else
                     errPrint("Could not move cursor to address.");
