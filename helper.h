@@ -7,7 +7,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-#define VERSION "v0.1.0"
+#define VERSION "v0.1.1"
 #define NAME "MBE"
 
 #define DISPLAY_SIZE 16
