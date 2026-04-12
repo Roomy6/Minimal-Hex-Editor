@@ -76,5 +76,5 @@ A list of things I'm working on implementing to the program.
 - [X] Move cursor to address (line editing)
 - [X] Fix address jumping for empty hex input
 - [X] Skip repeating values when reading
-- [ ] Fix cursor move address fill bug
+- [X] Fix cursor move address fill bug
 
