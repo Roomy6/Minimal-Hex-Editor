@@ -77,4 +77,5 @@ A list of things I'm working on implementing to the program.
 - [X] Fix address jumping for empty hex input
 - [X] Skip repeating values when reading
 - [X] Fix cursor move address fill bug
+- [ ] Fix arrow keys for movement & command
 
